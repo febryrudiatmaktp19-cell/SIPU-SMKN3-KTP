@@ -26,9 +26,6 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px 9px;
 .empty{text-align:center;color:#98a2b3;padding:28px}.hint{font-size:12px;color:var(--muted)}.pill{padding:3px 8px;border-radius:20px;background:#eaf3fc;color:#175c98;font-size:11px;font-weight:700}
 .checkrow{display:flex;align-items:center;gap:8px}.checkrow input{width:auto}
 footer{color:#98a2b3;font-size:11px;text-align:center;padding:25px}
-.login-screen{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at top right,#dbeafe,transparent 45%),linear-gradient(135deg,#eef4fb,#f8fafc)}
-.login-box{width:min(100%,390px);background:#fff;border:1px solid #e3e9f2;border-radius:18px;padding:30px;box-shadow:0 18px 55px #102b4e18}
-.login-box h2{text-align:center;color:var(--navy);margin:8px 0 4px}.login-box p{text-align:center;color:var(--muted);margin:0 0 24px}.login-box label{margin-top:12px}.login-mark{width:58px;height:58px;border-radius:16px;background:#eaf3fc;display:grid;place-items:center;font-size:28px;margin:auto}.login-message{font-size:12px;color:var(--muted);text-align:center;margin-top:13px;min-height:18px}
 .exam-card{width:7cm;height:8cm;border:1px solid #222;background:#fff;padding:5mm 4mm;overflow:hidden;display:flex;flex-direction:column;color:#111;font:7pt Arial,sans-serif;break-inside:avoid;page-break-inside:avoid}
 .exam-card .cardhead{display:flex;align-items:center;gap:4px;text-align:center;justify-content:center;border-bottom:1.5px solid #111;padding-bottom:4px;font-size:7pt;line-height:1.25}
 .exam-card .cardhead img{width:28px;height:28px;object-fit:contain}.exam-card .cardbody{display:flex;gap:4px;padding:5px 0;flex:1;min-height:0}.exam-card .cardbody table{font-size:6.5pt;margin:0}.exam-card .cardbody td{padding:2px 1px;border:0;vertical-align:top}.exam-card .photo-box{width:20mm;flex:none;text-align:center;border:1px solid #777;padding:3px;font-size:6pt;align-self:flex-start}.exam-card .card-foot{display:flex;justify-content:space-between;gap:3px;font-size:5.7pt;line-height:1.2;margin-top:auto}.exam-card .card-foot span:last-child{text-align:center}
@@ -37,18 +34,7 @@ footer{color:#98a2b3;font-size:11px;text-align:center;padding:25px}
 @media print{body{background:white}.no-print,header,aside,.heading,.actions,.hint,footer{display:none!important}main{padding:0;max-width:none}.page{display:none!important}.page.printing{display:block!important}.panel{border:0;box-shadow:none;padding:0}.tablewrap{overflow:visible}table{font-size:11px}th,td{padding:6px;border:1px solid #777}}
 </style></head>
 <body>
-<div id="loginScreen" class="login-screen">
-  <form class="login-box" onsubmit="event.preventDefault();loginApp()">
-    <div class="login-mark">🔐</div>
-    <h2>LOGIN APLIKASI</h2>
-    <p>Sistem Informasi Panitia Ujian<br><b>SMKN 3 Ketapang</b></p>
-    <label for="loginUsername">Nama Pengguna</label><input id="loginUsername" autocomplete="username" required placeholder="Masukkan nama pengguna">
-    <label for="loginPassword">Kata Sandi</label><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Masukkan kata sandi">
-    <button id="loginButton" type="submit" style="width:100%;margin-top:14px">Masuk</button>
-    <div id="loginMessage" class="login-message">Gunakan akun yang dibuat pada Google Apps Script.</div>
-  </form>
-</div>
-<div id="appShell" style="display:none">
+<div id="appShell">
 <header><div class="logo" id="brandLogo">LOGO</div><div><h1 id="brandTitle">SISTEM INFORMASI PANITIA UJIAN</h1><p id="brandSub">SMKN 3 Ketapang · Pengelolaan Peserta, Ruang, Kehadiran dan Dokumen Ujian</p></div></header>
 <div class="wrap">
 <aside class="no-print"><div class="navlabel">MENU UTAMA</div><nav id="nav">
@@ -61,12 +47,12 @@ footer{color:#98a2b3;font-size:11px;text-align:center;padding:25px}
 <button data-page="kartu"><span>▧</span>Kartu Ujian</button>
 <button data-page="denah"><span>▦</span>Susunan Kursi</button>
 <button data-page="laporan"><span>▤</span>Laporan & Cetak</button>
-</nav><div class="navlabel">PENYIMPANAN</div><button class="secondary" style="width:100%" onclick="backup()">⇩ Backup Data JSON</button><label class="btn secondary" style="display:block;text-align:center;margin-top:7px">⇧ Pulihkan JSON<input type="file" accept=".json" hidden onchange="restore(event)"></label><button class="danger" style="width:100%;margin-top:8px" onclick="logoutApp()">↪ Keluar / Logout</button></aside>
+</nav><div class="navlabel">PENYIMPANAN</div><button class="secondary" style="width:100%" onclick="backup()">⇩ Backup Data JSON</button><label class="btn secondary" style="display:block;text-align:center;margin-top:7px">⇧ Pulihkan JSON<input type="file" accept=".json" hidden onchange="restore(event)"></label></aside>
 <main>
 <section id="dashboard" class="page active">
 <div class="heading"><div><h2>Dashboard Panitia</h2><p>Ringkasan pelaksanaan dan pengelolaan ujian.</p></div><span class="pill" id="today"></span></div>
 <div class="cards"><div class="card"><small>Total Peserta Didik</small><div class="metric" id="mPeserta">0</div></div><div class="card"><small>Total Jurusan</small><div class="metric" id="mJurusan">0</div></div><div class="card"><small>Total Ruang</small><div class="metric" id="mRuang">0</div></div><div class="card"><small>Hadir Hari Ini</small><div class="metric" id="mHadir">0</div></div></div>
-<div class="panel"><h3>Status Database Online</h3><p id="cloudStatus" class="hint">Memeriksa koneksi database...</p><p class="hint">Data juga disimpan sementara di browser ini. Gunakan Backup Data JSON secara berkala.</p></div>
+<div class="panel"><h3>Status Penyimpanan Data</h3><p id="cloudStatus" class="hint">Mode lokal aktif · Data tersimpan otomatis di browser perangkat ini.</p><p class="hint">Gunakan tombol <b>Backup Data JSON</b> secara berkala untuk mencadangkan atau memindahkan data ke perangkat lain.</p></div>
 <div class="panel"><h3>Petunjuk penggunaan singkat</h3><ol><li>Lengkapi identitas sekolah dan unggah logo sekolah.</li><li>Masukkan jurusan, kelas, dan data peserta didik.</li><li>Buat ruang ujian, lalu tempatkan peserta ke ruang masing-masing.</li><li>Isi kehadiran dan berita acara pada setiap sesi ujian.</li><li>Cetak kartu, daftar hadir, denah kursi, dan laporan melalui menu terkait.</li></ol><p class="hint">Data tersimpan otomatis pada penyimpanan browser/perangkat ini. Lakukan backup JSON secara berkala.</p></div>
 <div class="panel"><h3>Peserta per jurusan</h3><div id="jurusanSummary" class="tablewrap"></div></div>
 </section>
@@ -119,39 +105,11 @@ footer{color:#98a2b3;font-size:11px;text-align:center;padding:25px}
 </div><!-- /appShell -->
 <script>
 const KEY='panitiaUjianSMKN3_v1';
-// WAJIB: ganti dengan URL Web App Google Apps Script yang berakhiran /exec.
-// Contoh: https://script.google.com/macros/s/AKfy.../exec
-const API_URL='https://script.google.com/macros/s/AKfycbzuLaOgPGqS3iX9jwdIysK3Ic7H8TBjPxW3OukVXKYzk0hqL-mOOPTot9ewHIKWq22x/exec';
-let apiReady=API_URL.startsWith('https://script.google.com/macros/s/');
-let sessionToken=sessionStorage.getItem('panitia_session_token')||'';
 let db={settings:{school:'SMKN 3 Ketapang',city:'Ketapang',examName:'UJIAN SEKOLAH',year:'2026/2027',semester:'Ganjil'},students:[],rooms:[],attendance:{},bas:[]};
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function load(){try{const x=JSON.parse(localStorage.getItem(KEY));if(x)db={...db,...x,settings:{...db.settings,...x.settings}}}catch(e){}}
-function persist(){localStorage.setItem(KEY,JSON.stringify(db));refresh();if(apiReady&&sessionToken)sendToCloud();}
-function postPayload(payload,frameName='apiFrame'){
-  let frame=document.getElementById(frameName);if(!frame){frame=document.createElement('iframe');frame.name=frameName;frame.id=frameName;frame.style.display='none';document.body.appendChild(frame)}
-  let form=document.createElement('form');form.method='POST';form.action=API_URL;form.target=frameName;form.style.display='none';
-  let input=document.createElement('input');input.name='payload';input.value=JSON.stringify(payload);form.appendChild(input);document.body.appendChild(form);form.submit();setTimeout(()=>form.remove(),1500);
-}
-function sendToCloud(){try{postPayload({action:'save',token:sessionToken,data:db});let st=$('cloudStatus');if(st)st.textContent='Sinkronisasi data dikirim ke Google Sheets.'}catch(e){console.warn('Sinkronisasi gagal',e)}}
-function showLogin(message='Silakan masuk menggunakan akun aplikasi.'){$('appShell').style.display='none';$('loginScreen').style.display='grid';$('loginMessage').textContent=message;$('loginPassword').value=''}
-function showApp(){$('loginScreen').style.display='none';$('appShell').style.display='block'}
-function loginApp(){
- if(!apiReady){$('loginMessage').textContent='URL Web App belum dipasang. Atur API_URL terlebih dahulu.';return}
- const btn=$('loginButton');btn.disabled=true;btn.textContent='Memeriksa...';$('loginMessage').textContent='Menghubungkan ke server...';
- const handler=e=>{if(!e.data||e.data.type!=='panitia-login-result')return;window.removeEventListener('message',handler);btn.disabled=false;btn.textContent='Masuk';if(e.data.ok&&e.data.token){sessionToken=e.data.token;sessionStorage.setItem('panitia_session_token',sessionToken);loadFromCloud()}else{$('loginMessage').textContent=e.data.message||'Nama pengguna atau kata sandi salah.'}};
- window.addEventListener('message',handler);
- postPayload({action:'login',username:$('loginUsername').value.trim(),password:$('loginPassword').value},'loginFrame');
- setTimeout(()=>{window.removeEventListener('message',handler);if(btn.disabled){btn.disabled=false;btn.textContent='Masuk';$('loginMessage').textContent='Server tidak merespons. Periksa URL dan deployment Apps Script.'}},15000);
-}
-function logoutApp(){if(!confirm('Keluar dari aplikasi?'))return;sessionToken='';sessionStorage.removeItem('panitia_session_token');showLogin('Anda telah keluar dari aplikasi.')}
-function loadFromCloud(){
- if(!apiReady){showLogin('URL API belum dikonfigurasi.');return}
- if(!sessionToken){showLogin();return}
- const cb='panitiaCloud_'+Date.now();window[cb]=function(result){try{if(result&&result.ok){if(result.data){db={...db,...result.data,settings:{...db.settings,...(result.data.settings||{})}};localStorage.setItem(KEY,JSON.stringify(db));settingsToForm();refresh()}showApp();let st=$('cloudStatus');if(st)st.textContent='Terhubung · Data dimuat dari Google Sheets.'}else if(result&&result.auth){sessionToken='';sessionStorage.removeItem('panitia_session_token');showLogin('Sesi berakhir. Silakan login kembali.')}else{showApp();let st=$('cloudStatus');if(st)st.textContent='Database kosong/baru. Data lokal tetap digunakan.'}}catch(e){console.error(e)}finally{delete window[cb];script.remove()}};
- const script=document.createElement('script');script.src=API_URL+'?action=load&token='+encodeURIComponent(sessionToken)+'&callback='+cb+'&t='+Date.now();script.onerror=()=>{let st=$('cloudStatus');if(st)st.textContent='Gagal menghubungi database. Periksa URL/deployment.';showLogin('Tidak dapat terhubung ke server. Periksa URL API.')};document.body.appendChild(script);
-}
+function persist(){localStorage.setItem(KEY,JSON.stringify(db));refresh()}
 function refresh(){renderDashboard();renderStudents();refreshSelects();renderRooms();renderBAList();renderReport();renderCardPreview();renderSeats()}
 function dateNow(){return new Date().toISOString().slice(0,10)}
 function go(page){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));$(page).classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page));refresh()}
@@ -162,7 +120,7 @@ function updateBrand(){$('brandTitle').textContent=db.settings.examName||'SISTEM
 $('logoFile').addEventListener('change',e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{db.settings.logo=r.result;persist();updateBrand()};r.readAsDataURL(f)});
 function unique(field){return [...new Set(db.students.map(s=>s[field]).filter(Boolean))].sort()}
 function fillSelect(id,items,first='Pilih'){let el=$(id);if(!el)return;let old=el.value;el.innerHTML='<option value="">'+first+'</option>'+items.map(x=>'<option value="'+esc(x)+'">'+esc(x)+'</option>').join('');if(items.includes(old))el.value=old}
-function refreshSelects(){let majors=unique('jurusan'),classes=unique('kelas'),rooms=db.rooms.map(r=>r.id);$('jurusanList').innerHTML=majors.map(x=>'<option value="'+esc(x)+'">').join('');$('kelasList').innerHTML=classes.map(x=>'<option value="'+esc(x)+'">').join('');
+function refreshSelects(){let majors=unique('jurusan'),classes=unique('kelas');$('jurusanList').innerHTML=majors.map(x=>'<option value="'+esc(x)+'">').join('');$('kelasList').innerHTML=classes.map(x=>'<option value="'+esc(x)+'">').join('');
 fillSelect('filterJurusan',majors,'Semua Jurusan');fillSelect('filterKelas',classes,'Semua Kelas');fillSelect('assignMajor',majors,'Semua Jurusan');fillSelect('assignClass',classes,'Semua Kelas');
 ['assignRoom','attRoom','baRoom','cardRoom','seatRoom'].forEach(id=>{let el=$(id);if(!el)return;let old=el.value;el.innerHTML='<option value="">Pilih Ruang</option>'+db.rooms.map(r=>'<option value="'+r.id+'">'+esc(r.name)+'</option>').join('');if(db.rooms.some(r=>r.id===old))el.value=old});
 let cs=$('cardStudent'),old=cs.value;cs.innerHTML='<option value="">Pilih Peserta</option>'+db.students.slice().sort(byStudent).map(s=>'<option value="'+s.id+'">'+esc(s.nis+' - '+s.nama)+'</option>').join('');if(db.students.some(s=>s.id===old))cs.value=old}
@@ -171,7 +129,7 @@ function saveStudent(){let s={id:$('studentId').value||crypto.randomUUID(),nis:$
 function clearStudent(){['studentId','nis','nama','jurusan','kelas','urut'].forEach(k=>$(k).value='');$('jk').value='L'}
 function editStudent(id){let s=db.students.find(x=>x.id===id);if(!s)return;Object.keys({studentId:1,nis:1,nama:1,jurusan:1,kelas:1,urut:1}).forEach(k=>$(k).value=s[k]||'');$('jk').value=s.jk;window.scrollTo(0,0)}
 function deleteStudent(id){if(!confirm('Hapus peserta ini?'))return;db.students=db.students.filter(s=>s.id!==id);db.rooms.forEach(r=>r.members=r.members.filter(x=>x!==id));persist()}
-function renderStudents(){let q=($('filterStudent')?.value||'').toLowerCase(),ma=$('filterJurusan')?.value||'',cl=$('filterKelas')?.value||'';let arr=db.students.filter(s=>(!q||(s.nis+' '+s.nama).toLowerCase().includes(q))&&(!ma||s.jurusan===ma)&&(!cl||s.kelas===cl)).sort(byStudent);$('studentTable').innerHTML=arr.length?'<table><thead><tr><th>No</th><th>NIS</th><th>Nama</th><th>JK</th><th>Jurusan</th><th>Kelas</th><th>Ruang</th><th class="no-print">Aksi</th></tr></thead><tbody>'+arr.map((s,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(s.nis)+'</td><td>'+esc(s.nama)+'</td><td>'+s.jk+'</td><td>'+esc(s.jurusan)+'</td><td>'+esc(s.kelas)+'</td><td>'+esc(roomOf(s.id)?.name||'-')+'</td><td class="no-print"><button class="small secondary" onclick="editStudent(\''+s.id+'\')">Edit</button> <button class="small danger" onclick="deleteStudent(\''+s.id+'\')">Hapus</button></td></tr>').join('')+'</tbody></table>':'<div class="empty">Belum ada data peserta didik.</div>'}
+function renderStudents(){let q=($('filterStudent')?.value||'').toLowerCase(),ma=$('filterJurusan')?.value||'',cl=$('filterKelas')?.value||'';let arr=db.students.filter(s=>(!q||(s.nis+' '+s.nama).toLowerCase().includes(q))&&(!ma||s.jurusan===ma)&&(!cl||s.kelas===cl)).sort(byStudent);$('studentTable').innerHTML=arr.length?'<table><thead><tr><th>No</th><th>NIS</th><th>Nama</th><th>JK</th><th>Jurusan</th><th>Kelas</th><th>Ruang</th><th class="no-print">Aksi</th></tr></thead><tbody>'+arr.map((s,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(s.nis)+'</td><td>'+esc(s.nama)+'</td><td>'+esc(s.jk)+'</td><td>'+esc(s.jurusan)+'</td><td>'+esc(s.kelas)+'</td><td>'+esc(roomOf(s.id)?.name||'-')+'</td><td class="no-print"><button class="small secondary" onclick="editStudent(\''+s.id+'\')">Edit</button> <button class="small danger" onclick="deleteStudent(\''+s.id+'\')">Hapus</button></td></tr>').join('')+'</tbody></table>':'<div class="empty">Belum ada data peserta didik.</div>'}
 function downloadCSVTemplate(){let a=document.createElement('a');a.href='data:text/csv;charset=utf-8,nis%2Cnama%2Cjk%2Cjurusan%2Ckelas%0A2026001%2CNama%20Peserta%2CL%2CTKJ%2CX%20TKJ%201';a.download='template_peserta.csv';a.click()}
 function importCSV(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{let lines=r.result.split(/\r?\n/).filter(Boolean);let start=/nis/i.test(lines[0])?1:0,n=0;for(let line of lines.slice(start)){let p=line.split(',').map(x=>x.trim().replace(/^"|"$/g,''));if(p.length<5||!p[0]||!p[1])continue;let old=db.students.find(s=>s.nis===p[0]);let s={id:old?.id||crypto.randomUUID(),nis:p[0],nama:p[1],jk:p[2]||'L',jurusan:p[3]||'Umum',kelas:p[4]||'-'};if(old)Object.assign(old,s);else db.students.push(s);n++}persist();alert(n+' data peserta diproses.');e.target.value=''};r.readAsText(f)}
 function addRoom(){let name=$('roomName').value.trim(),capacity=Number($('capacity').value);if(!name||capacity<1)return alert('Nama ruang dan kapasitas wajib diisi.');if(db.rooms.some(r=>r.name.toLowerCase()===name.toLowerCase()))return alert('Nama ruang sudah ada.');db.rooms.push({id:crypto.randomUUID(),name,loc:$('roomLoc').value,capacity,members:[]});$('roomName').value='';persist()}
@@ -212,5 +170,5 @@ function printReport(type){let s=db.settings,body=headerDoc()+'<h3 class="center
 function printTable(id,title){let content=$(id).innerHTML;printHTML(title,headerDoc()+'<h3 class="center">'+title+'</h3>'+content)}
 function backup(){let blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='backup_panitia_ujian_'+dateNow()+'.json';a.click();URL.revokeObjectURL(a.href)}
 function restore(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!x.students||!x.rooms)throw 0;if(confirm('Pulihkan data? Data saat ini akan diganti.')){db=x;persist();settingsToForm();alert('Data berhasil dipulihkan.')}}catch(err){alert('File backup tidak valid.')}e.target.value=''};r.readAsText(f)}
-load();settingsToForm();['attDate','baDate'].forEach(id=>$(id).value=dateNow());$('startDate').value=db.settings.startDate||'';$('endDate').value=db.settings.endDate||'';refresh();if(sessionToken)loadFromCloud();else showLogin();$('attRoom').addEventListener('change',renderAttendance);$('attDate').addEventListener('change',renderAttendance);$('attSession').addEventListener('change',renderAttendance);$('seatRoom').addEventListener('change',renderSeats);
+load();settingsToForm();['attDate','baDate'].forEach(id=>$(id).value=dateNow());$('startDate').value=db.settings.startDate||'';$('endDate').value=db.settings.endDate||'';refresh();$('attRoom').addEventListener('change',renderAttendance);$('attDate').addEventListener('change',renderAttendance);$('attSession').addEventListener('change',renderAttendance);$('seatRoom').addEventListener('change',renderSeats);
 </script></body></html>
